@@ -1,0 +1,1 @@
+export { TickerTape } from "./index";

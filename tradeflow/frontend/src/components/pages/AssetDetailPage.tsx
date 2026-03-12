@@ -1,0 +1,1 @@
+export { AssetDetailPage } from "./index";
