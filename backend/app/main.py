@@ -26,12 +26,16 @@ async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    # Connect Redis (optional)
+   # Connect Redis (optional)
     try:
         await redis_client.ping()
         log.info("redis.connected")
+        from app.core import redis as redis_module
+        redis_module._redis_available = True
     except Exception as e:
         log.warning("redis.connection_failed", error=str(e))
+        from app.core import redis as redis_module
+        redis_module._redis_available = False
 
     # Start price scheduler (background polling / websocket feeds)
     scheduler = PriceScheduler()
